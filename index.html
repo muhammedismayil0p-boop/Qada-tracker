@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14213d"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Qada Tracker"><title>Qada Tracker</title>
+<style>
+:root{--bg:#f6f1e8;--card:#fffdf8;--ink:#14213d;--mut:#6b7280;--g:#4f7d5f;--gt:#fff;--line:#e4dccb;--warn:#a4552f;--nav:#14213d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0c1426;--card:#142039;--ink:#ecebe4;--mut:#9aa6bd;--g:#7fb08f;--gt:#0c1426;--line:#243556;--warn:#e29a72;--nav:#0a1020;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0c1426;--card:#142039;--ink:#ecebe4;--mut:#9aa6bd;--g:#7fb08f;--gt:#0c1426;--line:#243556;--warn:#e29a72;--nav:#0a1020;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3,.big,.num{font-family:Georgia,'Times New Roman',serif;font-weight:600}h3{margin:22px 0 8px;font-size:18px}
+main{max-width:760px;margin:0 auto;padding:14px;animation:f .25s}@keyframes f{from{opacity:0;transform:translateY(6px)}}
+.hero,.card,.note{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.hero{background:var(--nav);color:#ecebe4;border:0}.hero .bar{background:#ffffff26}.hero .bar i{background:#9fd0ae}.hero .sub{color:#c3cbdb}
+.big{font-size:52px;line-height:1.1}.lbl,.sub{color:var(--mut);font-size:13px}.num{font-size:28px;color:var(--g)}
+.bar{height:8px;border-radius:8px;background:var(--line);overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;background:var(--g);transition:width .5s}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.row,.row2{display:flex;gap:8px;align-items:center;margin-top:10px}.row2{justify-content:space-between;margin:0}
+.btn,.btn2{min-height:46px;padding:0 18px;border-radius:12px;border:1px solid var(--g);font:600 15px system-ui;cursor:pointer;background:var(--g);color:var(--gt);flex:1}
+.btn2{background:transparent;color:var(--ink);border-color:var(--line)}.btn.w{width:100%;margin-top:8px}
+input,select{min-height:46px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:0 12px;font:16px system-ui;width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}.chip{padding:6px 12px;border-radius:20px;background:var(--line);font-size:13px}.chip.on,.chip.late{background:#4f7d5f44}.chip.missed{background:#a4552f33}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}.seg button,.strip button{min-height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);font:14px system-ui;cursor:pointer}
+.seg .on{background:var(--g);color:var(--gt);border-color:var(--g)}.seg .missed.on{background:var(--warn);border-color:var(--warn);color:#fff}
+.strip{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0}.strip button{font-size:12px;padding:4px 0;line-height:1.2}.strip .on{background:var(--ink);color:var(--bg)}.strip small{display:block;opacity:.6}
+.tx{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:12px 0;border-bottom:1px solid var(--line)}.tx .r{text-align:right}.acts{grid-column:1/3;display:flex;gap:8px}
+.acts button{background:none;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:6px 12px;cursor:pointer}.pos{color:var(--warn)}.neg{color:var(--g)}
+.chart{display:flex;align-items:flex-end;gap:3px;height:90px}.chart div{flex:1;background:var(--g);border-radius:3px 3px 0 0;min-height:2px}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--nav);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{flex:1;background:none;border:0;color:#9aa6bd;font:600 11px system-ui;min-height:48px;cursor:pointer;border-radius:10px}nav button.on{color:#fff;background:#ffffff1c}
+#m{display:none;position:fixed;inset:0;background:#000a;z-index:20;align-items:flex-end;justify-content:center}#m.on{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:560px;border-radius:20px 20px 0 0;padding:18px;max-height:90vh;overflow:auto;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+#t{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;z-index:30;max-width:90%}#t.on{opacity:1}
+table.rt{width:100%;border-collapse:collapse}.rt td{padding:5px 3px}.rt input{min-height:40px}a{color:var(--g);cursor:pointer;text-decoration:underline}details{margin:8px 0}summary{cursor:pointer;font-weight:600;min-height:36px}
+@media(min-width:800px){nav{max-width:760px;margin:auto;border-radius:16px 16px 0 0}}
+</style></head><body><main id="app"></main><nav id="nav"></nav><div id="m"></div><div id="t"></div>
+<script>
+//ENGINE-START
+const P=['Fajr','Dhuhr','Asr','Maghrib','Isha'];
+const SEED={Fajr:1184,Dhuhr:593,Asr:1183,Maghrib:947,Isha:1183};
+const dl=t=>t.type==='qada'?-t.qty:t.qty;
+const ord=(a,b)=>(a.date+a.at).localeCompare(b.date+b.at)||a.id.localeCompare(b.id);
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today=()=>iso(new Date());
+const addDays=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return iso(d)};
+const weekStart=s=>addDays(s,-((new Date(s+'T12:00:00').getDay()+6)%7));
+const dayDiff=(a,b)=>Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5);
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36);
+const fresh=()=>({v:1,initial:{...SEED},txns:[],days:{},settings:{theme:'auto',remindWeekly:true,remindDaily:false},meta:{lastBackup:null}});
+function replay(db,upTo){const bal={...db.initial},rows=[];[...db.txns].sort(ord).forEach(t=>{if(upTo&&t.date>upTo)return;const before=bal[t.prayer];bal[t.prayer]+=dl(t);rows.push({...t,before,after:bal[t.prayer]})});return{bal,rows}}
+function stats(db){const{bal,rows}=replay(db),o={};P.forEach(p=>o[p]={init:db.initial[p],missed:0,qada:0,bal:bal[p]});rows.forEach(t=>{const s=o[t.prayer];if(t.type==='missed')s.missed+=t.qty;else if(t.type==='qada')s.qada+=t.qty;else s.init+=t.qty});return o}
+function tot(s){const T={init:0,missed:0,qada:0,bal:0};P.forEach(p=>{for(const k in T)T[k]+=s[p][k]});T.den=T.init+T.missed;return T}
+function mutate(db,fn,force){const c=JSON.parse(JSON.stringify(db));fn(c);if(!force&&replay(c).rows.some(r=>r.after<0))throw new Error('That would make a balance negative. If the historical record is wrong, add a correction in Settings.');return c}
+function opStatus(c,d,p,s){const k='m:'+d+':'+p,had=c.txns.find(t=>t.id===k);if(s!=='missed')c.txns=c.txns.filter(t=>t.id!==k);else if(!had)c.txns.push({id:k,date:d,at:new Date().toISOString(),prayer:p,type:'missed',qty:1});c.days[d]=c.days[d]||{};if(s)c.days[d][p]=s;else delete c.days[d][p]}
+function opQada(c,d,p,q){c.txns.push({id:uid(),date:d,at:new Date().toISOString(),prayer:p,type:'qada',qty:q})}
+function opRecon(c,d,p,q){const k='r:'+d+':'+p,had=c.txns.find(t=>t.id===k);if(had&&had.qty===q)return;c.txns=c.txns.filter(t=>t.id!==k);if(q>0)c.txns.push({id:k,date:d,at:new Date().toISOString(),prayer:p,type:'qada',qty:q})}
+function opDelete(c,id){const t=c.txns.find(t=>t.id===id);c.txns=c.txns.filter(t=>t.id!==id);if(t&&id.startsWith('m:')&&c.days[t.date])delete c.days[t.date][t.prayer]}
+function weekData(db,ws){const we=addDays(ws,6),txns=db.txns.filter(t=>t.date>=ws&&t.date<=we).sort(ord),days={};for(let i=0;i<7;i++){const d=addDays(ws,i);if(db.days[d]&&Object.keys(db.days[d]).length)days[d]=db.days[d]}
+const m=txns.filter(t=>t.type==='missed').reduce((a,t)=>a+t.qty,0),q=txns.filter(t=>t.type==='qada').reduce((a,t)=>a+t.qty,0);
+return{format:'qada-tracker-backup',version:1,scope:'week',weekId:ws+'_to_'+we,weekStart:ws,weekEnd:we,exportedAt:new Date().toISOString(),startBalances:replay(db,addDays(ws,-1)).bal,endBalances:replay(db,we).bal,stats:{newlyMissed:m,qadaCompleted:q,netChange:m-q},txns,days}}
+function fullData(db){return{format:'qada-tracker-backup',version:1,scope:'all',exportedAt:new Date().toISOString(),initial:db.initial,settings:db.settings,txns:[...db.txns].sort(ord),days:db.days}}
+const DRE=/^\d{4}-\d\d-\d\d$/;
+function planImport(db,x){if(!x||x.format!=='qada-tracker-backup'||x.version!==1)return{err:'This is not a Qada Tracker backup file (format or version mismatch).'};
+const ok=t=>t&&typeof t.id==='string'&&t.id.length<80&&DRE.test(t.date)&&P.includes(t.prayer)&&['missed','qada','initial_adj','correction'].includes(t.type)&&Number.isInteger(t.qty)&&(t.qty>0||t.type==='initial_adj'||t.type==='correction')&&typeof t.at==='string';
+if(!Array.isArray(x.txns)||!x.txns.every(ok))return{err:'The backup contains invalid transaction records, so nothing was imported.'};
+const have=new Set(db.txns.map(t=>t.id));let dup=0,conf=0;const add=[];
+x.txns.forEach(t=>{if(have.has(t.id)){dup++;return}if(t.id.startsWith('m:')){const s=(db.days[t.date]||{})[t.prayer];if(s&&s!=='missed'){conf++;return}}add.push(t)});
+const dayAdd=[];Object.entries(x.days||{}).forEach(([d,r])=>{if(!DRE.test(d)||!r||typeof r!=='object')return;P.forEach(p=>{if(!['on','late','missed'].includes(r[p]))return;const cur=(db.days[d]||{})[p];if(!cur)dayAdd.push([d,p,r[p]]);else if(cur!==r[p])conf++})});
+return{add,dayAdd,dup,conf,x}}
+function applyImport(c,pl){pl.add.forEach(t=>c.txns.push({id:t.id,date:t.date,at:t.at,prayer:t.prayer,type:t.type,qty:t.qty}));pl.dayAdd.forEach(([d,p,s])=>{(c.days[d]=c.days[d]||{})[p]=s});
+Object.entries(c.days).forEach(([d,r])=>P.forEach(p=>{if(r[p]==='missed'&&!c.txns.some(t=>t.id==='m:'+d+':'+p))c.txns.push({id:'m:'+d+':'+p,date:d,at:d+'T12:00:00.000Z',prayer:p,type:'missed',qty:1})}))}
+function estimate(db){const{bal,rows}=replay(db),q=rows.filter(t=>t.type==='qada'),T=P.reduce((a,p)=>a+bal[p],0);
+if(!q.length)return{msg:'No Qada recorded yet, so no estimate is shown.',avg:0};
+const first=q[0].date,n=dayDiff(first,today())+1,qd=q.reduce((a,t)=>a+t.qty,0),ms=rows.filter(t=>t.type==='missed'&&t.date>=first).reduce((a,t)=>a+t.qty,0),avg=qd/n;
+if(n<7)return{msg:`Only ${n} day${n>1?'s':''} of Qada history so far. An estimate appears after 7 days.`,avg};
+if(T===0)return{msg:'All Qada is complete.',avg};const net=(qd-ms)/n;
+if(net<=0)return{msg:'At the recorded pace, new missed prayers match or exceed Qada completed, so no completion date can be estimated yet.',avg};
+const d=Math.ceil(T/net);return{avg,net,days:d,date:addDays(today(),d)}}
+function csv(rows){const e=s=>'"'+String(s).replace(/"/g,'""')+'"';return ['Date,Time,Prayer,Type,Quantity (signed debt change),Debt before,Debt after',...rows.map(t=>[t.date,new Date(t.at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),t.prayer,t.type,dl(t),t.before,t.after].map(e).join(','))].join('\n')}
+//ENGINE-END
+
+const TY={missed:'Newly missed obligatory prayer',qada:'Completed Qada prayer',initial_adj:'Initial debt adjustment',correction:'Historical correction'};
+const SL={'':'not recorded',on:'prayed on time',late:'prayed late (in time)',missed:'missed'},DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+let db,view='dash',date=today(),qp='Fajr',qn=1,qdt=today(),lf='all',xw=today(),memOnly=false,tt;
+const $=id=>document.getElementById(id),f=n=>Math.round(n).toLocaleString('en-US');
+const fmtD=d=>new Date(d+'T12:00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('qada-tracker',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function kvGet(){const d=await idb();return new Promise((res,rej)=>{const q=d.transaction('kv').objectStore('kv').get('db');q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})}
+async function kvSet(v){const d=await idb();return new Promise((res,rej)=>{const t=d.transaction('kv','readwrite');t.objectStore('kv').put(v,'db');t.oncomplete=res;t.onerror=()=>rej(t.error)})}
+async function save(){if(memOnly)return;try{await kvSet(db)}catch(e){memOnly=true;toast('Storage failed: export a backup now.');render()}}
+async function commit(fn,force){try{db=mutate(db,fn,force)}catch(e){toast(e.message);return false}await save();render();return true}
+function toast(m){const t=$('t');t.textContent=m;t.className='on';clearTimeout(tt);tt=setTimeout(()=>t.className='',3800)}
+function modal(h,ok,label='Confirm'){const m=$('m');m.innerHTML='<div class=sheet>'+h+'<div class=row><button class=btn2 onclick=closeM()>Cancel</button>'+(ok?'<button class=btn onclick=okM()>'+label+'</button>':'')+'</div></div>';m.className='on';window.okM=async()=>{if(await ok()!==false)closeM()}}
+function closeM(){$('m').className='';$('m').innerHTML=''}
+function go(v,d){view=v;if(d)date=d;render();scrollTo(0,0)}
+function applyTheme(){const t=db.settings.theme;if(t==='auto')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=t}
+function backupDue(){if(!db.settings.remindWeekly||!db.txns.length)return false;const b=db.meta.lastBackup;return !b||dayDiff(b.slice(0,10),today())>=7}
+function banner(){let h='';if(memOnly)h+='<div class=note><b>Storage unavailable.</b> Changes are kept only until you close this page. Export a backup before leaving.</div>';
+if(backupDue())h+=`<div class=note>Weekly reminder: ${db.meta.lastBackup?'your last backup was '+fmtD(db.meta.lastBackup.slice(0,10)):'you have not exported a backup yet'}. <a onclick="go('settings')">Export a backup</a> whenever convenient. Exported files are yours to keep safe.</div>`;
+if(db.settings.remindDaily&&Object.keys(db.days[today()]||{}).length<5)h+=`<div class=note>Your optional evening review is available any time: <a onclick="recon(today())">open daily review</a>.</div>`;return h}
+const per=(a,b)=>{let q=0,m=0;db.txns.forEach(t=>{if(t.date>=a&&t.date<=b){if(t.type==='qada')q+=t.qty;if(t.type==='missed')m+=t.qty}});return{q,m}};
+
+function vDash(){const s=stats(db),T=tot(s),td=db.days[today()]||{},pct=T.den?T.qada/T.den*100:0,e=estimate(db);
+return banner()+`<div class=hero><div class=lbl style="color:#c3cbdb">Outstanding Qada</div><div class=big>${f(T.bal)}</div><div class=bar><i style="width:${Math.min(100,pct)}%"></i></div><div class=sub>${pct.toFixed(1)}% repaid · ${f(T.qada)} Qada completed · ${f(T.missed)} newly missed recorded</div><div class=sub style="margin-top:6px">${e.date?'Estimated completion: '+fmtD(e.date)+' (based on your actual pace)':e.msg}</div></div>
+<h3>Today's obligatory Salah</h3><div class=chips>${P.map(p=>`<span class="chip ${td[p]||''}">${p}: ${SL[td[p]||'']}</span>`).join('')}</div><button class="btn w" onclick="go('log',today())">Record today</button>
+<h3>Qada by prayer</h3><div class=grid>${P.map(p=>{const x=s[p];return`<div class=card><div class=row2><b>${p}</b><span class=num>${f(x.bal)}</span></div><div class=sub>Qada completed ${f(x.qada)} · newly missed ${f(x.missed)}</div><div class=row><button class=btn onclick="qp='${p}';go('qada')">Record Qada</button><button class=btn2 onclick="lf='${p}';go('ledger')">History</button></div></div>`}).join('')}</div>`}
+
+function vLog(){const d=date,r=db.days[d]||{},ws=weekStart(d),q=replay(db).rows.filter(t=>t.type==='qada'&&t.date===d);
+return banner()+`<div class=row2><button class=btn2 style="flex:0 0 52px" onclick="go('log',addDays(date,-1))">‹</button><input type=date value="${d}" onchange="go('log',this.value||today())" style="margin:0 8px"><button class=btn2 style="flex:0 0 52px" onclick="go('log',addDays(date,1))">›</button></div>
+<div class=strip>${DN.map((n,i)=>{const x=addDays(ws,i),c=Object.keys(db.days[x]||{}).length;return`<button class="${x===d?'on':''}" onclick="go('log','${x}')">${n}<br>${x.slice(8)}<small>${c?c+'/5':'·'}</small></button>`}).join('')}</div>
+<div class=sub>On time and Late (within its valid time) never change debt. Only Missed adds one to that prayer. Unrecorded prayers are never assumed missed.</div>
+${P.map(p=>`<div class=card><b>${p}</b><div class=seg>${[['on','On time'],['late','Late'],['missed','Missed'],['','Clear']].map(([k,l])=>`<button class="${(r[p]||'')===k&&k?'on '+k:''}" onclick="setSt('${d}','${p}','${k}')">${l}</button>`).join('')}</div></div>`).join('')}
+<button class="btn w" onclick="recon('${d}')">Daily review (obligatory + Qada)</button>
+<h3>Qada completed on this date</h3>${q.length?q.map(t=>`<div class=card>${t.qty} × Qada ${t.prayer} <span class=sub>(${t.before} → ${t.after})</span></div>`).join(''):'<div class=sub>None recorded.</div>'}`}
+function setSt(d,p,k){commit(c=>opStatus(c,d,p,k))}
+
+function selQ(p){qp=p;render()}
+function vQada(){const b=replay(db).bal[qp],recent=replay(db).rows.filter(t=>t.type==='qada').slice(-5).reverse();
+return banner()+`<h3 style="margin-top:4px">Qada Completed</h3><div class=sub>Separate from today's obligatory prayers. Extra makeup prayers only.</div><div class=chips style="margin-top:12px">${P.map(p=>`<button class="chip" style="border:0;cursor:pointer;min-height:44px;padding:0 16px;${p===qp?'background:var(--g);color:var(--gt)':'color:var(--ink)'}" onclick="selQ('${p}')">Qada ${p}</button>`).join('')}</div>
+<div class=card><div class=sub>Remaining Qada ${qp}</div><div class=num>${f(b)}</div><div class=sub style="margin-top:10px">Number completed</div><input type=number inputmode=numeric min=1 step=1 value=${qn} oninput="qn=this.value"><div class=sub style="margin-top:10px">Date</div><input type=date value=${qdt} onchange="qdt=this.value||today()"><button class="btn w" onclick="recQ()">Record</button></div>
+<h3>Recent</h3>${recent.length?recent.map(t=>`<div class=card>${t.qty} × Qada ${t.prayer} · ${fmtD(t.date)}</div>`).join(''):'<div class=sub>Nothing yet.</div>'}`}
+function recQ(){const n=Number(qn);if(!Number.isInteger(n)||n<1)return toast('Enter a whole number of 1 or more.');const b=replay(db).bal[qp];if(n>b)return toast(`Only ${b} Qada ${qp} remaining.`);
+modal(`<h3>Confirm</h3>Record <b>${n} × Qada ${qp}</b> on ${fmtD(qdt)}?<div class=sub>${qp} balance: ${b} → ${b-n}</div>`,async()=>{const d=qdt;if(!await commit(c=>opQada(c,d,qp,n)))return false;qn=1})}
+
+function vLedger(){const rows=replay(db).rows.reverse().filter(t=>lf==='all'||t.prayer===lf);
+return banner()+`<div class=row2><h3 style="margin:0">Transaction ledger</h3><button class=btn2 style="flex:0 0 auto;min-height:40px" onclick="addCorr()">+ Correction</button></div><select style="margin-top:10px" onchange="lf=this.value;render()"><option value=all>All prayers</option>${P.map(p=>`<option ${lf===p?'selected':''}>${p}</option>`).join('')}</select>
+${rows.length?rows.map(t=>`<div class=tx><div><b>${t.prayer}</b> · ${TY[t.type]}<div class=sub>${fmtD(t.date)} ${new Date(t.at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div><div class=r><b class="${dl(t)>0?'pos':'neg'}">${dl(t)>0?'+':'−'}${Math.abs(dl(t))}</b><div class=sub>${t.before} → ${t.after}</div></div><div class=acts><button data-id="${t.id}" onclick="editTx(this.dataset.id)">Edit</button><button data-id="${t.id}" onclick="delTx(this.dataset.id)">Delete</button></div></div>`).join(''):'<p class=sub>No transactions yet. Starting balances come from Settings.</p>'}`}
+function editTx(id){const t=db.txns.find(x=>x.id===id);if(!t)return;
+if(id.startsWith('m:'))return modal(`<h3>Daily-log entry</h3>This missed prayer is controlled by that day's status. Change the status in the Daily log, or delete it here.`,()=>go('log',t.date),'Open that day');
+const signed=t.type==='correction'||t.type==='initial_adj';modal(`<h3>Edit ${TY[t.type]}</h3><div class=sub>${t.prayer} · ${fmtD(t.date)}${signed?' · signed change to debt':''}</div><input id=eq type=number step=1 value=${t.qty}>`,()=>{const v=Number($('eq').value);if(!Number.isInteger(v)||(!signed&&v<1)||v===0){toast('Enter a valid whole number.');return false}return commit(c=>{c.txns.find(x=>x.id===id).qty=v},signed)})}
+function delTx(id){const t=db.txns.find(x=>x.id===id);if(!t)return;modal(`<h3>Delete this transaction?</h3>${TY[t.type]} · ${t.prayer} · ${fmtD(t.date)}<div class=sub>All balances will be recalculated.${id.startsWith('m:')?" The day's status for this prayer will be cleared.":''}</div>`,()=>commit(c=>opDelete(c,id),t.type==='correction'||t.type==='initial_adj'),'Delete')}
+function addCorr(){modal(`<h3>Historical correction</h3><div class=sub>Positive adds to debt, negative reduces it. Recorded in the ledger.</div><select id=cp>${P.map(p=>`<option>${p}</option>`).join('')}</select><input id=cv type=number step=1 placeholder="e.g. -5 or 3" style="margin-top:8px"><input id=cd type=date value=${today()} style="margin-top:8px">`,()=>{const v=Number($('cv').value),p=$('cp').value,d=$('cd').value||today();if(!Number.isInteger(v)||!v){toast('Enter a non-zero whole number.');return false}return commit(c=>c.txns.push({id:uid(),date:d,at:new Date().toISOString(),prayer:p,type:'correction',qty:v}),true)})}
+
+function vProg(){const s=stats(db),T=tot(s),e=estimate(db),t=today(),ws=weekStart(t),w=per(ws,addDays(ws,6)),lw=per(addDays(ws,-7),addDays(ws,-1)),ms=t.slice(0,8),mo=per(ms+'01',ms+'31');
+const days=[...Array(14)].map((_,i)=>addDays(t,i-13)),vals=days.map(d=>per(d,d).q),mx=Math.max(1,...vals);
+return banner()+`<h3 style="margin-top:4px">Progress</h3><div class=card><div class=row2><b>Overall</b><span class=num>${T.den?(T.qada/T.den*100).toFixed(1):0}%</span></div><div class=bar><i style="width:${T.den?Math.min(100,T.qada/T.den*100):0}%"></i></div><div class=sub>${f(T.qada)} repaid of ${f(T.den)} total (starting ${f(T.init)} + ${f(T.missed)} newly missed)</div></div>
+${P.map(p=>{const x=s[p],d=x.init+x.missed;return`<div class=card><div class=row2><b>${p}</b><span class=sub>${f(x.bal)} left</span></div><div class=bar><i style="width:${d?Math.min(100,x.qada/d*100):0}%"></i></div><div class=sub>${f(x.qada)} of ${f(d)} · ${d?(x.qada/d*100).toFixed(1):0}%</div></div>`}).join('')}
+<h3>Activity</h3><div class=card><div class=row2><span>This week</span><b>${w.q} Qada · ${w.m} missed</b></div><div class=row2 style="margin-top:6px"><span>Last week</span><b>${lw.q} Qada · ${lw.m} missed</b></div><div class=row2 style="margin-top:6px"><span>This month</span><b>${mo.q} Qada · ${mo.m} missed</b></div><div class=row2 style="margin-top:6px"><span>Total repaid / missed</span><b>${f(T.qada)} / ${f(T.missed)}</b></div><div class=row2 style="margin-top:6px"><span>Average Qada per day</span><b>${e.avg?e.avg.toFixed(2):'–'}</b></div></div>
+<div class=card><div class=sub>Qada per day, last 14 days</div><div class=chart>${vals.map(v=>`<div style="height:${v/mx*100}%" title="${v}"></div>`).join('')}</div></div>
+<div class=card><b>Estimated completion</b><div class=sub style="margin-top:4px">${e.date?`About ${f(e.days)} days, around ${fmtD(e.date)}, at your recorded net pace of ${e.net.toFixed(2)} prayers/day (Qada completed minus newly missed, since your first Qada entry).`:e.msg}</div></div>`}
+
+function vSet(){const s=stats(db),ws=weekStart(xw),b=db.meta.lastBackup;
+return banner()+`<h3 style="margin-top:4px">Backup & restore</h3><div class=card><div class=sub>Last backup exported: ${b?new Date(b).toLocaleString():'never'}. Exporting creates a file only. It is not uploaded anywhere, and you are responsible for keeping it safe. Debt never resets weekly.</div>
+<div class=sub style="margin-top:10px">Week (Mon–Sun) containing</div><input type=date value=${xw} onchange="xw=this.value||today();render()"><div class=sub>${fmtD(ws)} to ${fmtD(addDays(ws,6))}</div>
+<button class="btn w" onclick="expWeek()">Export Weekly Backup (JSON)</button><button class="btn2 w" style="width:100%;margin-top:8px" onclick="expWeekCsv()">Weekly transactions (CSV)</button>
+<button class="btn2 w" style="width:100%;margin-top:8px" onclick="expAll()">Complete backup, all records (JSON)</button><button class="btn2 w" style="width:100%;margin-top:8px" onclick="expAllCsv()">Full transaction history (CSV)</button>
+<div class=sub style="margin-top:10px">Import a backup (weekly or complete)</div><input type=file accept=".json,application/json" onchange="impFile(this)"></div>
+<h3>Starting balances</h3><div class=card><div class=sub>Edits are saved as an "initial debt adjustment" in the ledger.</div>${P.map(p=>`<div class=row2 style="margin-top:8px"><span>${p}</span><input id=i_${p} type=number min=0 step=1 value=${s[p].init} style="width:120px"></div>`).join('')}<button class="btn w" onclick="saveInit()">Save starting balances</button></div>
+<h3>Preferences</h3><div class=card><div class=sub>Theme</div><select onchange="db.settings.theme=this.value;applyTheme();save()">${['auto','light','dark'].map(t=>`<option ${db.settings.theme===t?'selected':''}>${t}</option>`).join('')}</select>
+<label class=row><input type=checkbox style="width:24px;min-height:24px" ${db.settings.remindWeekly?'checked':''} onchange="db.settings.remindWeekly=this.checked;save();render()"> Weekly backup reminder (shown in the app)</label>
+<label class=row><input type=checkbox style="width:24px;min-height:24px" ${db.settings.remindDaily?'checked':''} onchange="db.settings.remindDaily=this.checked;save();render()"> Gentle daily review prompt (in the app)</label>
+<button class="btn2 w" style="width:100%;margin-top:10px" onclick="addCorr()">Add historical correction</button></div>
+<details class=card><summary>Accounting methodology</summary><div class=sub>Remaining = starting debt + newly missed obligatory prayers − completed Qada. Balances are never stored; they are recomputed from the ledger every time. Today's obligatory prayers and historical Qada are separate: praying all five today changes nothing. Only a prayer you mark Missed adds one debt; unrecorded is never assumed missed. Changing a status replaces its single ledger entry, so repeated edits or refreshes cannot double count. Daily review entries are keyed by date and prayer, so revisiting a date replaces rather than duplicates. Negative balances are blocked except through explicit corrections.</div></details>
+<button class="btn2 w" style="width:100%;color:var(--warn)" onclick="erase()">Erase all data…</button>`}
+function saveInit(){const ch=[];P.forEach(p=>{const v=Number($('i_'+p).value),cur=stats(db)[p].init;if(!Number.isInteger(v)||v<0)ch.push('bad');else if(v!==cur)ch.push([p,v-cur,v])});
+if(ch.includes('bad'))return toast('Use whole numbers, 0 or more.');if(!ch.length)return toast('No changes to save.');
+modal(`<h3>Confirm changes</h3>${ch.map(([p,d,v])=>`${p}: starting balance → ${f(v)} (${d>0?'+':''}${d})`).join('<br>')}`,()=>commit(c=>ch.forEach(([p,d])=>c.txns.push({id:uid(),date:today(),at:new Date().toISOString(),prayer:p,type:'initial_adj',qty:d})),true))}
+function erase(){modal(`<h3>Erase everything?</h3>This permanently deletes all balances, daily records and transactions on this device. Export a backup first. Type <b>ERASE</b> to confirm.<input id=er style="margin-top:8px">`,async()=>{if($('er').value!=='ERASE'){toast('Type ERASE to confirm.');return false}db=fresh();await save();applyTheme();go('dash')},'Erase')}
+
+async function dlFile(name,text){try{const d=window.claude&&await claude.use('downloads');if(d)await d.save({filename:name,data:text});else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text]));a.download=name;a.click()}
+db.meta.lastBackup=new Date().toISOString();await save();render();toast('Backup file created. Keep it somewhere safe.')}catch(e){if(!e||e.code!=='declined')toast('Could not save file: '+((e&&e.message)||'unavailable'))}}
+const wk=()=>{const ws=weekStart(xw);return[ws,addDays(ws,6)]};
+function expWeek(){const[a,b]=wk();dlFile(`Qada_Backup_${a}_to_${b}.json`,JSON.stringify(weekData(db,a),null,2))}
+function expWeekCsv(){const[a,b]=wk();dlFile(`Qada_Transactions_${a}_to_${b}.csv`,csv(replay(db).rows.filter(t=>t.date>=a&&t.date<=b)))}
+function expAll(){dlFile(`Qada_Backup_FULL_${today()}.json`,JSON.stringify(fullData(db),null,2))}
+function expAllCsv(){dlFile(`Qada_Transactions_ALL_${today()}.csv`,csv(replay(db).rows))}
+function impFile(el){const fl=el.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{el.value='';let x;try{x=JSON.parse(r.result)}catch(e){return toast('That file is not valid JSON.')}
+const pl=planImport(db,x);if(pl.err)return toast(pl.err);
+modal(`<h3>Review import</h3><div class=sub>${x.scope==='week'?'Weekly backup '+x.weekId:'Complete backup'} · exported ${x.exportedAt?new Date(x.exportedAt).toLocaleString():'unknown'}</div><p>${x.txns.length} transactions in file<br><b>${pl.add.length}</b> new will be added<br>${pl.dup} already present (skipped)<br>${pl.dayAdd.length} missing daily records restored<br>${pl.conf} conflicting entries (your current records are kept)</p><div class=sub>Nothing existing is overwritten. Balances are recalculated afterwards.</div>`,()=>pl.add.length||pl.dayAdd.length?commit(c=>applyImport(c,pl)).then(ok=>{if(ok)toast('Import complete.');return ok}):(toast('Nothing new to import.'),true),'Import')};r.readAsText(fl)}
+
+function recon(d){const r=db.days[d]||{},cur={};P.forEach(p=>{const t=db.txns.find(t=>t.id==='r:'+d+':'+p);cur[p]=t?t.qty:0});
+modal(`<h3>Daily review · ${fmtD(d)}</h3><table class=rt><tr><td></td><td class=sub>Obligatory</td><td class=sub>Qada</td></tr>${P.map(p=>`<tr><td>${p}</td><td><select id=rs_${p}>${[['','Not recorded'],['on','On time'],['late','Late'],['missed','Missed']].map(([k,l])=>`<option value="${k}" ${(r[p]||'')===k?'selected':''}>${l}</option>`).join('')}</select></td><td style="width:80px"><input id=rq_${p} type=number min=0 step=1 value=${cur[p]}></td></tr>`).join('')}</table><div class=sub>Qada here replaces this date's earlier review entry. Entries from the Qada tab stay separate.</div>`,()=>{
+const v={};for(const p of P){const q=Number($('rq_'+p).value);if(!Number.isInteger(q)||q<0){toast('Qada counts must be whole numbers, 0 or more.');return false}v[p]={s:$('rs_'+p).value,q}}
+const ap=c=>P.forEach(p=>{opStatus(c,d,p,v[p].s);opRecon(c,d,p,v[p].q)});let c;try{c=mutate(db,ap)}catch(e){toast(e.message);return false}
+const a=replay(db).bal,b=replay(c).bal;let net=0;
+modal(`<h3>Confirm changes</h3>${P.map(p=>{const x=b[p]-a[p];net+=x;return`<div class=row2 style="margin-top:6px"><span>${p} · ${SL[v[p].s]} · Qada ${v[p].q}</span><b class="${x>0?'pos':'neg'}">${x>0?'+':''}${x}</b></div>`}).join('')}<div class=row2 style="margin-top:10px"><b>Net change to total debt</b><b>${net>0?'+':''}${net}</b></div>`,async()=>{if(!await commit(ap))return false});return false},'Review changes')}
+
+function render(){const V={dash:vDash,log:vLog,qada:vQada,ledger:vLedger,prog:vProg,settings:vSet};$('app').innerHTML=V[view]();
+$('nav').innerHTML=[['dash','Home'],['log','Daily'],['qada','Qada'],['ledger','Ledger'],['prog','Progress'],['settings','Settings']].map(([k,l])=>`<button class="${view===k?'on':''}" onclick="go('${k}')">${l}</button>`).join('')}
+(async()=>{let st;try{st=await kvGet()}catch(e){memOnly=true}
+db=st||fresh();if(!db.settings)db.settings=fresh().settings;if(!db.meta)db.meta={lastBackup:null};if(!st)await save();
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}applyTheme();render();if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{})})();
+</script></body></html>
